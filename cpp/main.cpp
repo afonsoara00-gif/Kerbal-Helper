@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string.h>
 #include <string>
+#include <synchapi.h>
 #include <windows.h>
 #include <print>
 #include <winnt.h>
@@ -21,7 +22,10 @@ using std::string;
 using std::vector;
 
 #define Listadetarefas\
-    tarefa(deltav,"deltav","0") //lista de todas as tarefas(ex:deltav)
+    tarefa(deltav,"deltav","0")\
+    tarefa(quit, "q", "exit") 
+    //lista de todas as tarefas(ex:deltav)
+
 enum class tarefalista{ //criaçao um enum de tarefas
     #define tarefa(nomedatarefa,str,num) nomedatarefa,
     Listadetarefas
@@ -52,6 +56,11 @@ bool listadetarefas(const string& tarefa){
             system("cls");
             deltav();
             break;
+        case tarefalista::quit:
+            system("cls");
+            println("Goodbye for now, and have a great space exploration.");
+            Sleep(1000);
+            exit(0);
         default:
             Erro("ERRO","Not found",MB_RIGHT | MB_ICONERROR);
             return false ;
@@ -92,16 +101,16 @@ void menu(){
     }
     println(); 
     println();
+    println("To exit the programe type q or exit");
     print("Type: ");
     cin >> nomedatarefa;
     for (size_t i = 0; i < nomedatarefa.size(); i++) {
         nomedatarefa[i] = std::tolower(static_cast<unsigned char>(nomedatarefa[i]));
     }
-    if(listadetarefas(nomedatarefa) == false){
-       goto restart;
-    }
+    listadetarefas(nomedatarefa);
+    goto restart;
 }
 int main(){
     menu();
-    return 0; 
+    return 0;
 } 
